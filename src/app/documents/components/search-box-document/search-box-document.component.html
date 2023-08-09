@@ -1,0 +1,73 @@
+<ng-template #searchById>
+  <div class="row  border border-gray rounded-3 p-4">
+    <div class="col mb-4">
+      <h6 class="text-secondary">Buscar documento equivalente:</h6>
+      <hr>
+    </div>
+    <form class="form-group" #myForm="ngForm" (ngSubmit)="emitValueById()">
+      <div class="d-flex align-items-center justify-content-between">
+        <label for="id">Número documento</label>
+        <div class="d-flex">
+          <input type="text" id="id" name="numeroDocumento" [(ngModel)]="inputId" class="input-group-text mx-4 rounded"
+            #nameInput1="ngModel" required>
+          <button class="btn btn-success" type="submit" [disabled]="myForm.invalid">Buscar</button>
+        </div>
+      </div>
+    </form>
+    <div class="mt-5">
+      <div>
+        <h6 class="text-secondary">Buscar documentos equivalentes en falla</h6>
+        <hr>
+      </div>
+      <form class="d-flex mt-5" (ngSubmit)="getAllDocumentsInFailure()">
+        <input type="date" format="yyyy-mm-dd" name="firstDate" class="form-control mx-3" [(ngModel)]="initialDate"
+          [class.border-danger]="firstDateClassDF" (ngModelChange)="onFirstDateChangeDF()">
+        <input type="date" format="yyyy-mm-dd" name="secondDate" class="form-control mx-3" [(ngModel)]="finalDate">
+        <button class="btn btn-success" type="submit">Buscar</button>
+      </form>
+    </div>
+    <div class="mt-5 d-flex justify-content-between">
+      <button type="button" class="btn btn-success mr-4" (click)="getAllDocuments()">Obtener todos los documentos
+        enviados</button>
+      <button type="button" class="btn btn-success" (click)="sendDocumentsFailed()">Enviar documentos</button>
+    </div>
+  </div>
+  <div class="mt-4">
+    <loading-component *ngIf="isLoading"></loading-component>
+    <empty-data-component *ngIf="!allDocuments && !document && !failDocuments"></empty-data-component>
+    <document-table *ngIf="allDocuments || failDocuments" [allDocuments]="allDocuments" [failDocuments]="failDocuments"
+      [selectionFailsDocuments]="selectionFailsDocuments"></document-table>
+  </div>
+</ng-template>
+
+<div *ngIf="typeOf; else searchById" class="row  border border-gray rounded-3 p-4">
+  <div>
+    <div class="col mb-4">
+      <h6 class="text-secondary">Enviar documentos equivalentes por fecha</h6>
+      <hr>
+    </div>
+    <div class="d-flex">
+      <input type="date" format="yyyy-mm-dd" name="firstDate" class="form-control mx-3" [(ngModel)]="input1Value"
+      (ngModelChange)="onFirstDateChange()" [class.border-danger]="firstDateClass">
+      <input type="date" format="yyyy-mm-dd" name="secondDate" class="form-control mx-3" [(ngModel)]="input2Value">
+    </div>
+    <div class="w-100 d-flex justify-content-end">
+      <button class="btn btn-success max-width-20 mt-4" (click)="emitValueByMonth()">Enviar</button>
+    </div>
+  </div>
+  <div>
+    <div class="col mb-4">
+      <h6 class="text-secondary">Enviar documentos equivalentes por consecutivo</h6>
+      <hr>
+    </div>
+    <div class="d-flex">
+      <label for="numberFS" class="badge bg-primary text-wrap text-center">Número FS: </label>
+      <input type="number" id="numberFS" class="form-control mx-3" [(ngModel)]="numberFS">
+      <label for="numberDSE" class="badge bg-primary text-wrap text-center">Número DSE: </label>
+      <input type="number" id="numberDSE" class="form-control mx-3" [(ngModel)]="numberDSE">
+    </div>
+    <div class="w-100 d-flex justify-content-end">
+      <button class="btn btn-success max-width-20 mt-4" (click)="sendDocuementByFs()">Enviar</button>
+    </div>
+  </div>
+</div>

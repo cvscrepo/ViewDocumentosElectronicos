@@ -1,0 +1,132 @@
+<ng-template  class="bg bg-light text-light" #secondTable>
+  <table mat-table [dataSource]="dataSource" class="text-light" matSort (matSortChange)="announceSortChange($event)">
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id"> Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="documento">
+      <th mat-header-cell *matHeaderCellDef> Documento </th>
+      <td mat-cell *matCellDef="let element"> {{element.documento}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="documentoTN">
+      <th mat-header-cell *matHeaderCellDef> DocumentoTN </th>
+      <td mat-cell *matCellDef="let element"> {{element.documentoTN}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="numero">
+      <th mat-header-cell *matHeaderCellDef> Numero </th>
+      <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numetoTN">
+      <th mat-header-cell *matHeaderCellDef> NumeroTN </th>
+      <td mat-cell *matCellDef="let element"> {{element.numetoTN}} </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="mensaje" class="w-10 p-3 ">
+      <th mat-header-cell *matHeaderCellDef> Mensaje </th>
+      <td mat-cell *matCellDef="let element"> {{element.mensaje}} </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="fechaCreacion">
+      <th mat-header-cell *matHeaderCellDef> Fecha Creación </th>
+      <td mat-cell *matCellDef="let element"> {{element.fechaCreacion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaActualizacion">
+      <th mat-header-cell *matHeaderCellDef> Fecha Actualización </th>
+      <td mat-cell *matCellDef="let element"> {{ element.fechaActualizacion === null ? "Null" : element.fechaActualizacion }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</ng-template>
+
+<div *ngIf="failDocuments.length > 0; else secondTable " >
+  <table mat-table [dataSource]="secondDataSource" class="text-light" matSort (matSortChange)="announceSortChange($event)">
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? toggleAllRowsFail() : null"
+                      [checked]="selectionFailsDocuments.hasValue() && isAllSelectedFail()"
+                      [indeterminate]="selectionFailsDocuments.hasValue() && !isAllSelectedFail()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selectionFailsDocuments.toggle(row) : null"
+                      [checked]="selectionFailsDocuments.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="documento">
+      <th mat-header-cell *matHeaderCellDef> Documento </th>
+      <td mat-cell *matCellDef="let element"> {{element.facc_documento}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numero">
+      <th mat-header-cell *matHeaderCellDef> Numero </th>
+      <td mat-cell *matCellDef="let element"> {{element.facn_numero}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.terc_nombre}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="tercero">
+      <th mat-header-cell *matHeaderCellDef> Fac Tercero </th>
+      <td mat-cell *matCellDef="let element"> {{element.facv_tercero}} </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="mensaje" class="w-10 p-3 ">
+      <th mat-header-cell *matHeaderCellDef> Mensaje </th>
+      <td mat-cell *matCellDef="let element"> {{element.mensaje}} </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="fechaCreacion">
+      <th mat-header-cell *matHeaderCellDef> Fecha Creación </th>
+      <td mat-cell *matCellDef="let element"> {{element.facf_fecha}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumsByFail; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumsByFail;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
